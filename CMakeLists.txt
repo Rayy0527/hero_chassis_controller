@@ -13,7 +13,6 @@ find_package(catkin REQUIRED COMPONENTS
         control_toolbox
         simple_chassis_controller
         rm_description
-        rm_description-1
         pluginlib
 )
 
@@ -208,3 +207,4 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+add_executable(left_back_wheel_joint_PID src/left_back_wheel_joint_PID.cpp)
