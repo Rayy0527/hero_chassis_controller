@@ -8,8 +8,12 @@ project(hero_chassis_controller)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  std_msgs
+        roscpp
+        std_msgs
+        control_toolbox
+        simple_chassis_controller
+        rm_description
+        rm_description-1
 )
 
 ## System dependencies are found with CMake's conventions
