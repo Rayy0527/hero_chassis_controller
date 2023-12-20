@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
         simple_chassis_controller
         rm_description
         rm_description-1
+        pluginlib
 )
 
 ## System dependencies are found with CMake's conventions

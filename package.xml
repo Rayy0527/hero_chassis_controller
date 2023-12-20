@@ -59,6 +59,7 @@
   <depend>simple_chassis_controller</depend>
   <depend>rm_description</depend>
   <depend>rm_description-1</depend>
+  <depend>pluginlib</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
