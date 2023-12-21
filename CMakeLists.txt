@@ -207,4 +207,10 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(left_back_wheel_joint_PID src/left_back_wheel_joint_PID.cpp)
+add_executable(left_back_wheel_joint_PID src/left_back_wheel_joint_PID.cpp
+        src/left_back_wheel_joint_PID.cpp)
+
+
+target_link_libraries(left_back_wheel_joint_PID
+        ${catkin_LIBRARIES}
+)
