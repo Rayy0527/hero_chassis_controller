@@ -4,6 +4,11 @@ project(hero_chassis_controller)
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_definitions(-Wall -Werror)
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -11,9 +16,11 @@ find_package(catkin REQUIRED COMPONENTS
         roscpp
         std_msgs
         control_toolbox
-        simple_chassis_controller
+        forward_command_controller
         rm_description
         pluginlib
+        controller_interface
+        hardware_interface
 )
 
 ## System dependencies are found with CMake's conventions
@@ -111,9 +118,11 @@ catkin_package(
     CATKIN_DEPENDS roscpp std_msgs
 #    DEPENDS system_lib
         control_toolbox
-        simple_chassis_controller
         rm_description
         pluginlib
+        controller_interface
+        hardware_interface
+        forward_command_controller
 )
 
 ###########
@@ -129,9 +138,9 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/hero_chassis_controller.cpp
-# )
+ add_library(${PROJECT_NAME}
+   src/${PROJECT_NAME}.cpp
+ )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -141,7 +150,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
- add_executable(${PROJECT_NAME} src/hero_chassis_controller.cpp)
+# add_executable(${PROJECT_NAME} src/hero_chassis_controller.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

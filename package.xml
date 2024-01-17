@@ -58,9 +58,10 @@
 
 <!--  <exec_depend>roscpp</exec_depend>-->
 <!--  <exec_depend>std_msgs</exec_depend>-->
-
+  <depend>controller_interface</depend>
+  <depend>hardware_interface</depend>
+  <depend>forward_command_controller</depend>
   <depend>control_toolbox</depend>
-  <depend>simple_chassis_controller</depend>
   <depend>rm_description</depend>
   <depend>pluginlib</depend>
 <!--  <depend>controller_interface</depend>-->
