@@ -32,44 +32,11 @@ bool HeroChassisController::init(hardware_interface::EffortJointInterface *effor
     pid_back_left.initPid(p, i, d, i_max, i_min);
     pid_back_right.initPid(p, i, d, i_max, i_min);
 
+    Kinematics_Init();
+
     return true;
 }
 
-
-
-//
-//void control_toolbox::Pid::initPid(double p, double i, double d, double i_max, double i_min,
-//                  const ros::NodeHandle& /*node*/)
-//{
-//    initPid(p, i, d, i_max, i_min);
-//
-//    // Create node handle for dynamic reconfigure
-//    ros::NodeHandle nh(DEFAULT_NAMESPACE);
-//    initDynamicReconfig(nh);
-//}
-//
-//
-//double control_toolbox::Pid::computeCommand(double error, ros::Duration dt)
-//{
-//
-//    if (dt == ros::Duration(0.0) || std::isnan(error) || std::isinf(error))
-//        return 0.0;
-//
-//    double error_dot = d_error_;
-//
-//    // Calculate the derivative error
-//    if (dt.toSec() > 0.0)
-//    {
-//        if (valid_p_error_last_) {
-//            error_dot = (error - p_error_last_) / dt.toSec();
-//        }
-//        p_error_last_ = error;
-//        valid_p_error_last_ = true;
-//    }
-//
-//    return computeCommand(error, error_dot, dt);
-//}
-//
 
 void HeroChassisController::Kinematics_Init()
 {
@@ -80,6 +47,7 @@ void HeroChassisController::Kinematics_Init()
     float r_y = D_Y / 2;
     rx_plus_ry_cali = (r_x + r_y) / angular_correction_factor;
 }
+
 
 void HeroChassisController::Kinematics_Inverse(float *input, float *output)
 {
@@ -102,9 +70,11 @@ void HeroChassisController::Kinematics_Inverse(float *input, float *output)
     output[3] =  (v_w[3] * pulse_per_meter / PID_RATE);
 }
 
+
+
 geometry_msgs::Twist CmdVel;
 
-float cmdVelCallback(const geometry_msgs::Twist::ConstPtr &msg)
+void cmdVelCallback(const geometry_msgs::Twist::ConstPtr &msg)
 {
     CmdVel = *msg;
 }
@@ -114,6 +84,9 @@ float linear_vy = CmdVel.linear.y;
 float angular_w = CmdVel.angular.z;
 float vel[] = {linear_vx, linear_vy, angular_w};
 float *v = vel;
+
+
+
 
 void HeroChassisController::update(const ros::Time &time, const ros::Duration &period)
 {
