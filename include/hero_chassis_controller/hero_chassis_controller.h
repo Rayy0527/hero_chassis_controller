@@ -38,6 +38,10 @@ namespace Controller {
         hardware_interface::JointHandle front_left_joint_, front_right_joint_, back_left_joint_, back_right_joint_;
 
         ros::Subscriber cmd_vel_sub;
+        ros::Publisher odom_pub;
+        tf::TransformBroadcaster odom_broadcaster;
+        ros::Time current_time;
+        ros::Time last_time;
 
         void Kinematics_Init(void);
 

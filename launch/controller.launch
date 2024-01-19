@@ -17,4 +17,6 @@
     <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"/>
     <node name="teleop_twist_keyboard.py" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py"
             output="screen"/>
+    <node name="rviz" pkg="rviz" type="rviz"
+          args="-d $(find hero_chassis_controller)/config/hero_chassis_controller.rviz" required="true"/>
 </launch>

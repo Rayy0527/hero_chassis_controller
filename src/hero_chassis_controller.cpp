@@ -31,8 +31,8 @@ namespace Controller {
             return false;
             }
 
-
         cmd_vel_sub = root_nh.subscribe("/cmd_vel", 1, cmdVelCallBack);
+        odom_pub = root_nh.advertise<nav_msgs::Odometry>("/odom", 50);
 
         pid_front_left.initPid(p, i, d, i_max, i_min);
         pid_front_right.initPid(p, i, d, i_max, i_min);
@@ -130,6 +130,60 @@ namespace Controller {
         front_right_joint_.setCommand(command_front_right);
         back_left_joint_.setCommand(command_back_left);
         back_right_joint_.setCommand(command_back_right);
+
+        double x = 0.0;
+        double y = 0.0;
+        double w = 0.0;
+
+        double vx = 0.25 * 0.5 * WHEEL_DIAMETER * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
+        double vy = 0.25 * 0.5 * WHEEL_DIAMETER * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
+        double vw = 0.25 * 0.5 * WHEEL_DIAMETER * 0.5 * (D_X + D_Y) * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
+
+        current_time = ros::Time::now();
+        last_time = ros::Time::now();
+        double dt = (current_time - last_time).toSec();
+        ros::Rate r(1.0);
+
+        double dx = (vx * cos(w) - vy * sin(w)) * dt;
+        double dy = (vx * sin(w) + vy * cos(w)) * dt;
+        double dw = vw * dt;
+
+        x += dx;
+        y += dy;
+        w += dw;
+
+        geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(w);
+
+        geometry_msgs::TransformStamped odom_trans;
+        odom_trans.header.stamp = current_time;
+        odom_trans.header.frame_id = "odom";
+        odom_trans.child_frame_id = "base_link";
+
+        odom_trans.transform.translation.x = x;
+        odom_trans.transform.translation.y = y;
+        odom_trans.transform.translation.z = 0.0;
+        odom_trans.transform.rotation = odom_quat;
+
+        odom_broadcaster.sendTransform(odom_trans);
+
+        nav_msgs::Odometry odom;
+        odom.header.stamp = current_time;
+        odom.header.frame_id = "odom";
+
+        odom.pose.pose.position.x = x;
+        odom.pose.pose.position.y = y;
+        odom.pose.pose.position.z = 0.0;
+        odom.pose.pose.orientation = odom_quat;
+
+        odom.child_frame_id = "base_link";
+        odom.twist.twist.linear.x = vx;
+        odom.twist.twist.linear.y = vy;
+        odom.twist.twist.angular.z = vw;
+
+        odom_pub.publish(odom);
+
+        last_time = current_time;
+
 
 
     }
