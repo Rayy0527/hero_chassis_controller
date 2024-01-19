@@ -2,15 +2,19 @@
     <include file="$(find rm_description)/launch/hero.launch">
         <arg name="load_chassis" value="true"/>
         <arg name="roller_type" value="realistic"/>
-        <arg name="paused" value="true"/>
+        <arg name="paused" value="false"/>
     </include>
 
     <rosparam file="$(find hero_chassis_controller)/config/controller.yaml" command="load"/>
     <!-- load the controllers -->
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-          output="screen" ns="controller" args="
-        controller/hero_chassis_controller
-        controller/joint_state_controller
+          output="screen" args="
+        Controller/hero_chassis_controller
+        Controller/joint_state_controller
   "/>
 
+    <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure"/>
+    <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"/>
+    <node name="teleop_twist_keyboard.py" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py"
+            output="screen"/>
 </launch>

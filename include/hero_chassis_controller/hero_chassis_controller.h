@@ -17,13 +17,15 @@
 #include <hardware_interface/joint_command_interface.h>
 #include <control_toolbox/pid.h>
 #include <geometry_msgs/Twist.h>
+#include <realtime_tools/realtime_publisher.h>
+#include <control_msgs/JointControllerState.h>
 
 
 //    class KinematicsInverse
 //    {
 //    private:
 //        double pulse_per_meter = 0;
-//        float rx_plus_ry_cali = 0.3;
+//        double rx_plus_ry_cali = 0.3;
 //        double angular_correction_factor = 1.0;
 //        double linear_correction_factor = 1.0;
 //
@@ -34,10 +36,10 @@
 //        void Kinematics_Init(void)
 //        {
 //            pulse_per_meter =
-//                    (float) (ENCODER_RESOLUTION / (WHEEL_DIAMETER * 3.1415926)) / linear_correction_factor;
+//                    (double) (ENCODER_RESOLUTION / (WHEEL_DIAMETER * 3.1415926)) / linear_correction_factor;
 //
-//            float r_x = D_X / 2;
-//            float r_y = D_Y / 2;
+//            double r_x = D_X / 2;
+//            double r_y = D_Y / 2;
 //            rx_plus_ry_cali = (r_x + r_y) / angular_correction_factor;
 //        }
 ///**
@@ -47,13 +49,13 @@
 //  */
 //        void Kinematics_Inverse(int16_t* input, int16_t* output)
 //        {
-//            float r_x = D_X / 2;
-//            float r_y = D_Y / 2;
-//            float v_tx = (float) input[0];
-//            float v_ty = (float) input[1];
-//            float omega = (float) input[2];
+//            double r_x = D_X / 2;
+//            double r_y = D_Y / 2;
+//            double v_tx = (double) input[0];
+//            double v_ty = (double) input[1];
+//            double omega = (double) input[2];
 //
-//            static float v_w[4] = {0};
+//            static double v_w[4] = {0};
 //
 //            v_w[0] = v_tx - v_ty - (r_x + r_y) * omega;
 //            v_w[1] = v_tx + v_ty + (r_x + r_y) * omega;
@@ -67,7 +69,7 @@
 //        }
 //    };
 //
-
+namespace Controller {
     class HeroChassisController : public controller_interface::Controller<hardware_interface::EffortJointInterface> {
     public:
         HeroChassisController() = default;
@@ -77,32 +79,37 @@
         bool init(hardware_interface::EffortJointInterface *effort_joint_interface,
                   ros::NodeHandle &root_nh, ros::NodeHandle &controller_nh) override;
 
-        void update(const ros::Time &time, const ros::Duration &period) override ;
+        void update(const ros::Time &time, const ros::Duration &period) override;
 
         hardware_interface::JointHandle front_left_joint_, front_right_joint_, back_left_joint_, back_right_joint_;
+
+        ros::Subscriber cmd_vel_sub;
+//        std::unique_ptr <
+//                realtime_tools::RealtimePublisher<control_msgs::JointControllerState>
+//        > controller_state_publisher;
 
         void Kinematics_Init(void);
 //        {
 //            pulse_per_meter =
-//                    (float) (ENCODER_RESOLUTION / (WHEEL_DIAMETER * 3.1415926)) / linear_correction_factor;
+//                    (double) (ENCODER_RESOLUTION / (WHEEL_DIAMETER * 3.1415926)) / linear_correction_factor;
 //
-//            float r_x = D_X / 2;
-//            float r_y = D_Y / 2;
+//            double r_x = D_X / 2;
+//            double r_y = D_Y / 2;
 //            rx_plus_ry_cali = (r_x + r_y) / angular_correction_factor;
 //        }
 
-        void cmdVelCallback(const geometry_msgs::Twist::ConstPtr &msg);
+        static void cmdVelCallBack(const geometry_msgs::Twist::ConstPtr &msg);
 
 
-        void Kinematics_Inverse(float *input, float *output);
+        double Kinematics_Inverse(double *input);
 //        {
-//            float r_x = D_X / 2;
-//            float r_y = D_Y / 2;
-//            float v_tx = (float) input[0];
-//            float v_ty = (float) input[1];
-//            float omega = (float) input[2];
+//            double r_x = D_X / 2;
+//            double r_y = D_Y / 2;
+//            double v_tx = (double) input[0];
+//            double v_ty = (double) input[1];
+//            double omega = (double) input[2];
 //
-//            static float v_w[4] = {0};
+//            static double v_w[4] = {0};
 //
 //            v_w[0] = v_tx - v_ty - (r_x + r_y) * omega;
 //            v_w[1] = v_tx + v_ty + (r_x + r_y) * omega;
@@ -117,12 +124,14 @@
 
     private:
         int state_{};
-        ros::Time last_change_;
         double pulse_per_meter = 0;
-        float rx_plus_ry_cali = 0.3;
+        double rx_plus_ry_cali = 0.3;
         double angular_correction_factor = 1.0;
         double linear_correction_factor = 1.0;
 
-    };
+        ros::Time last_change_;
+        geometry_msgs::Twist vel_msgs;
 
+    };
+}
 #endif //HERO_CHASSIS_CONTROLLER_HERO_CHASSIS_CONTROLLER_H
