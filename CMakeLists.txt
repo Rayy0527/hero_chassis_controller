@@ -21,6 +21,8 @@ find_package(catkin REQUIRED COMPONENTS
         pluginlib
         controller_interface
         hardware_interface
+        tf
+        nav_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -123,6 +125,8 @@ catkin_package(
         controller_interface
         hardware_interface
         forward_command_controller
+        tf
+        nav_msgs
 )
 
 ###########

@@ -64,6 +64,8 @@
   <depend>control_toolbox</depend>
   <depend>rm_description</depend>
   <depend>pluginlib</depend>
+  <depend>tf</depend>
+  <depend>nav_msgs</depend>
 <!--  <depend>controller_interface</depend>-->
 <!--  <depend>hardware_interface</depend>-->
 

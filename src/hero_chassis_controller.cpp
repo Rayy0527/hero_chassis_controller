@@ -20,9 +20,7 @@ namespace Controller {
         back_right_joint_ = effort_joint_interface->getHandle("right_back_wheel_joint");
 
         double p, i, d, i_max, i_min;
-//        controller_nh.getParam("hero_chassis_controller/pid/p", p);
-//        controller_nh.getParam("hero_chassis_controller/pid/i", i);
-//        controller_nh.getParam("hero_chassis_controller/pid/d", d);
+
         controller_nh.getParam("pid/i_min", i_min);
         controller_nh.getParam("pid/i_max", i_max);
         if (!controller_nh.getParam("/controller/hero_chassis_controller/pid/p", p) ||
@@ -33,14 +31,8 @@ namespace Controller {
             return false;
             }
 
-//        vel_pub = root_nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
-//        vel_pub.publish(vel_msgs);
-//        vel_msgs.linear.x = 0.5;
-//        vel_msgs.linear.y = 0.0;
-//        vel_msgs.linear.z = 0.0;
 
         cmd_vel_sub = root_nh.subscribe("/cmd_vel", 1, cmdVelCallBack);
-//        controller_state_publisher.reset(new realtime_tools::RealtimePublisher<control_msgs::JointControllerState>(controller_nh, "state", 1));
 
         pid_front_left.initPid(p, i, d, i_max, i_min);
         pid_front_right.initPid(p, i, d, i_max, i_min);
