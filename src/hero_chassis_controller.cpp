@@ -23,9 +23,9 @@ namespace Controller {
 
         controller_nh.getParam("pid/i_min", i_min);
         controller_nh.getParam("pid/i_max", i_max);
-        if (!controller_nh.getParam("/controller/hero_chassis_controller/pid/p", p) ||
-            !controller_nh.getParam("/controller/hero_chassis_controller/pid/i", i) ||
-            !controller_nh.getParam("/controller/hero_chassis_controller/pid/d", d))
+        if (!controller_nh.getParam("/Controller/hero_chassis_controller/pid/p", p) ||
+            !controller_nh.getParam("/Controller/hero_chassis_controller/pid/i", i) ||
+            !controller_nh.getParam("/Controller/hero_chassis_controller/pid/d", d))
             {
             ROS_ERROR("Failed to get parameters from the parameter server");
             return false;
