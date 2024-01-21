@@ -44,6 +44,10 @@ namespace Controller {
         ros::Time current_time;
         ros::Time last_time;
 
+        double x = 0.0;
+        double y = 0.0;
+        double w = 0.0;
+
         void Kinematics_Init(void);
 
 

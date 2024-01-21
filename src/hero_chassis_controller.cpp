@@ -191,9 +191,9 @@ namespace Controller {
         back_left_joint_.setCommand(command_back_left);
         back_right_joint_.setCommand(command_back_right);
 
-        double x = 0.0;
-        double y = 0.0;
-        double w = 0.0;
+//        double x = 0.0;
+//        double y = 0.0;
+//        double w = 0.0;
 
 //        double vx = 0.25 * 0.5 * WHEEL_DIAMETER * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
 //        double vy = 0.25 * 0.5 * WHEEL_DIAMETER * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
@@ -207,7 +207,7 @@ namespace Controller {
 //        double vy = 0.5*(desired_vel[2] - desired_vel[0]);
 //        double vw = (desired_vel[1] - desired_vel[2])/(D_Y + D_X);
 
-        ROS_INFO("vx = %0.10f, vy = %0.10f, vw = %0.10f",vx,vy,vw);
+//        ROS_INFO("vx = %0.10f, vy = %0.10f, vw = %0.10f",vx,vy,vw);
 
         current_time = ros::Time::now();
         last_time = ros::Time::now();
