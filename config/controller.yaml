@@ -16,7 +16,7 @@ Controller:
     right_back_wheel_joint:
       joint: back_right_joint_
       
-    vel_mode: base_link
+    vel_mode: odom
 
     pid: {p: 100.0, i: 0.01, d: 10.0}
 
