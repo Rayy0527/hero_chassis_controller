@@ -25,8 +25,8 @@ namespace Controller {
         controller_nh.getParam("pid/i_max", i_max);
         if (!controller_nh.getParam("/Controller/hero_chassis_controller/pid/p", p) ||
             !controller_nh.getParam("/Controller/hero_chassis_controller/pid/i", i) ||
-            !controller_nh.getParam("/Controller/hero_chassis_controller/pid/d", d) ||
-            !controller_nh.getParam("/Controller/hero_chassis_controller/vel_mode", vel_mode))
+            !controller_nh.getParam("/Controller/hero_chassis_controller/pid/d", d))
+//            !controller_nh.getParam("/Controller/hero_chassis_controller/vel_mode", vel_mode))
             {
             ROS_ERROR("Failed to get parameters from the parameter server");
             return false;
@@ -114,46 +114,46 @@ namespace Controller {
         geometry_msgs::Vector3Stamped vel_angular;
         geometry_msgs::Vector3Stamped vel_angular_base_link;
 
-        if (vel_mode == "base_link")
-        {
-            try
-            {
-                vel_listener.waitForTransform("base_link", "odom", ros::Time(0), ros::Duration(1.0));
-
-                vel_linear.header.stamp = ros::Time::now();
-                vel_linear.header.frame_id = "odom";
-                vel_linear_base_link.header.frame_id = "base_link";
-                vel_linear.vector.x = linear_vx;
-                vel_linear.vector.y = linear_vy;
-                vel_linear.vector.z = linear_vz;
-                vel_listener.transformVector("base_link", vel_linear, vel_linear_base_link);
-
-                vel_angular.header.stamp = ros::Time::now();
-                vel_angular.header.frame_id = "odom";
-                vel_angular_base_link.header.frame_id = "base_link";
-                vel_angular.vector.x = angular_vx;
-                vel_angular.vector.y = angular_vy;
-                vel_angular.vector.z = angular_vz;
-                vel_listener.transformVector("base_link", vel_angular, vel_angular_base_link);
-            }
-            catch (tf::TransformException &ex)
-            {
-                ROS_ERROR("Transform exception: %s", ex.what());
-            }
-            vel[0] = vel_linear_base_link.vector.x;
-            vel[1] = vel_linear_base_link.vector.y;
-            vel[2] = vel_angular_base_link.vector.z;
-        }
-        else if (vel_mode == "odom")
-        {
+//        if (vel_mode == "base_link")
+//        {
+//            try
+//            {
+//                vel_listener.waitForTransform("base_link", "odom", ros::Time(0), ros::Duration(1.0));
+//
+//                vel_linear.header.stamp = ros::Time::now();
+//                vel_linear.header.frame_id = "odom";
+//                vel_linear_base_link.header.frame_id = "base_link";
+//                vel_linear.vector.x = linear_vx;
+//                vel_linear.vector.y = linear_vy;
+//                vel_linear.vector.z = linear_vz;
+//                vel_listener.transformVector("base_link", vel_linear, vel_linear_base_link);
+//
+//                vel_angular.header.stamp = ros::Time::now();
+//                vel_angular.header.frame_id = "odom";
+//                vel_angular_base_link.header.frame_id = "base_link";
+//                vel_angular.vector.x = angular_vx;
+//                vel_angular.vector.y = angular_vy;
+//                vel_angular.vector.z = angular_vz;
+//                vel_listener.transformVector("base_link", vel_angular, vel_angular_base_link);
+//            }
+//            catch (tf::TransformException &ex)
+//            {
+//                ROS_ERROR("Transform exception: %s", ex.what());
+//            }
+//            vel[0] = vel_linear_base_link.vector.x;
+//            vel[1] = vel_linear_base_link.vector.y;
+//            vel[2] = vel_angular_base_link.vector.z;
+//        }
+//        else if (vel_mode == "odom")
+//        {
             vel[0] = linear_vx;
             vel[1] = linear_vy;
             vel[2] = angular_vz;
-        }
-        else
-        {
-            ROS_ERROR("Neither 'odom' nor 'base_link'");
-        }
+//        }
+//        else
+//        {
+//            ROS_ERROR("Neither 'odom' nor 'base_link'");
+//        }
     }
 
 
@@ -195,13 +195,23 @@ namespace Controller {
         double y = 0.0;
         double w = 0.0;
 
-        double vx = 0.25 * 0.5 * WHEEL_DIAMETER * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
-        double vy = 0.25 * 0.5 * WHEEL_DIAMETER * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
-        double vw = 0.25 * 0.5 * WHEEL_DIAMETER * 0.5 * (D_X + D_Y) * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
+//        double vx = 0.25 * 0.5 * WHEEL_DIAMETER * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
+//        double vy = 0.25 * 0.5 * WHEEL_DIAMETER * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
+//        double vw = 0.25 * 0.5 * WHEEL_DIAMETER * 0.5 * (D_X + D_Y) * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
+
+        double vx = 0.5*(realtime_back_left + realtime_back_right);
+        double vy = 0.5*(realtime_back_left - realtime_front_left);
+        double vw = (realtime_front_right - realtime_back_left)/(D_Y + D_X);
+//
+//        double vx = 0.5*(desired_vel[2] + desired_vel[3]);
+//        double vy = 0.5*(desired_vel[2] - desired_vel[0]);
+//        double vw = (desired_vel[1] - desired_vel[2])/(D_Y + D_X);
+
+        ROS_INFO("vx = %0.10f, vy = %0.10f, vw = %0.10f",vx,vy,vw);
 
         current_time = ros::Time::now();
         last_time = ros::Time::now();
-        double dt = (current_time - last_time).toSec();
+        double dt = (time - last_time).toSec();
         ros::Rate r(1.0);
 
         double dx = (vx * cos(w) - vy * sin(w)) * dt;
