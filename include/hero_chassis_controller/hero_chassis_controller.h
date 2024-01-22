@@ -61,7 +61,7 @@ namespace Controller {
 
 //        static tf::TransformBroadcaster vel_broadcaster;
 //        static tf::TransformListener vel_listener;
-//        static std::string vel_mode;
+//        std::string vel_mode;
 //        static ros::Subscriber vel_odom_sub;
 
 
