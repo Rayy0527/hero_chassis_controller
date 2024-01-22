@@ -8,9 +8,15 @@
 
 #define ENCODER_RESOLUTION      1440.0   //编码器分辨率, 轮子转一圈，编码器产生的脉冲数
 #define WHEEL_DIAMETER          0.1525    //轮子直径,单位：米
-#define D_X                     0.18     //底盘Y轴上两轮中心的间距
-#define D_Y                     0.25     //底盘X轴上两轮中心的间距
+#define D_X                     0.4     //底盘Y轴上两轮中心的间距
+#define D_Y                     0.4     //底盘X轴上两轮中心的间距
 #define PID_RATE                50       //PID调节PWM值的频率
+#define ENCODER_MAX 32767
+#define ENCODER_MIN -32768
+#define ENCODER_LOW_WRAP  ((ENCODER_MAX - ENCODER_MIN)*0.3+ENCODER_MIN)
+#define ENCODER_HIGH_WRAP ((ENCODER_MAX - ENCODER_MIN)*0.7+ENCODER_MIN)
+#define PI 3.1415926
+
 
 #include <ros/ros.h>
 #include <controller_interface/controller.h>

@@ -199,6 +199,50 @@ namespace Controller {
 //        double vy = 0.25 * 0.5 * WHEEL_DIAMETER * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
 //        double vw = 0.25 * 0.5 * WHEEL_DIAMETER * 0.5 * (D_X + D_Y) * (realtime_front_left + realtime_front_right + realtime_back_left + realtime_back_right);
 
+        static double encoder_sum[4] = {0};
+        encoder_sum[0] = -realtime_front_left;
+        encoder_sum[1] = realtime_front_right;
+        encoder_sum[2] = -realtime_back_left;
+        encoder_sum[3] = realtime_back_right;
+
+        double wheel_turns[4] = {0};
+        double encoder_sum_current[4] = {0};
+//        for(int i=0;i<4;i++)
+//        {
+//            if(encoder_sum[i] < ENCODER_LOW_WRAP && encoder_sum_current[i] > ENCODER_HIGH_WRAP)
+//                wheel_turns[i]++;
+//            else if(encoder_sum[i] > ENCODER_HIGH_WRAP && encoder_sum_current[i] < ENCODER_LOW_WRAP)
+//                wheel_turns[i]--;
+//            else
+//                wheel_turns[i]=0;
+//        }
+
+
+        realtime_front_left = 1.0*(encoder_sum[0] + wheel_turns[0]*(ENCODER_MAX-ENCODER_MIN)-encoder_sum_current[0])/pulse_per_meter;
+        encoder_sum_current[0] = encoder_sum[0];
+        realtime_front_right = 1.0*(encoder_sum[1] + wheel_turns[1]*(ENCODER_MAX-ENCODER_MIN)-encoder_sum_current[1])/pulse_per_meter;
+        encoder_sum_current[1] = encoder_sum[1];
+        realtime_back_left = 1.0*(encoder_sum[2] + wheel_turns[2]*(ENCODER_MAX-ENCODER_MIN)-encoder_sum_current[2])/pulse_per_meter;
+        encoder_sum_current[2] = encoder_sum[2];
+        realtime_back_right = 1.0*(encoder_sum[3] + wheel_turns[3]*(ENCODER_MAX-ENCODER_MIN)-encoder_sum_current[3])/pulse_per_meter;
+        encoder_sum_current[3] = encoder_sum[3];
+
+
+        for(int i=0;i<4;i++)
+        {
+            if(encoder_sum[i] < ENCODER_LOW_WRAP && encoder_sum_current[i] > ENCODER_HIGH_WRAP)
+                wheel_turns[i]++;
+            else if(encoder_sum[i] > ENCODER_HIGH_WRAP && encoder_sum_current[i] < ENCODER_LOW_WRAP)
+                wheel_turns[i]--;
+            else
+                wheel_turns[i]=0;
+        }
+
+        realtime_front_left = -realtime_front_left;
+//        realtime_front_right = realtime_front_right;
+        realtime_back_left = -realtime_back_left;
+//        realtime_back_right = realtime_back_right;
+
         double vx = 0.5*(realtime_back_left + realtime_back_right);
         double vy = 0.5*(realtime_back_left - realtime_front_left);
         double vw = (realtime_front_right - realtime_back_left)/(D_Y + D_X);
@@ -214,9 +258,14 @@ namespace Controller {
         double dt = (time - last_time).toSec();
         ros::Rate r(1.0);
 
-        double dx = (vx * cos(w) - vy * sin(w)) * dt;
-        double dy = (vx * sin(w) + vy * cos(w)) * dt;
-        double dw = vw * dt;
+        double dx = (vx * cos(w) - vy * sin(w)) * dt * 1000;
+        double dy = (vx * sin(w) + vy * cos(w)) * dt * 1000;
+        double dw = vw * dt * 1000;
+
+        if(dw > PI)
+            dw -= 2*PI;
+        else if(dw < -PI)
+            dw += 2*PI;
 
         x += dx;
         y += dy;
