@@ -1,0 +1,18 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCATKIN_DEVEL_PREFIX:PATH=home/rmray/catkin_ws/devel -G "CodeBlocks - Unix Makefiles" -S /home/rmray/catkin_ws/src/hero_chassis_controller -B "/home/rmray/catkin_ws/src/hero_chassis_controller/home/rmray/catkin_ws/build "
+-- Using CATKIN_DEVEL_PREFIX: home/rmray/catkin_ws/devel
+-- Using CMAKE_PREFIX_PATH: /home/rmray/catkin_ws/devel;/opt/ros/noetic
+-- This workspace overlays: /home/rmray/catkin_ws/devel;/opt/ros/noetic
+-- Using PYTHON_EXECUTABLE: /usr/bin/python3
+-- Using Debian Python package layout
+-- Using empy: /usr/lib/python3/dist-packages/em.py
+CMake Error at /opt/ros/noetic/share/catkin/cmake/list_insert_in_workspace_order.cmake:8 (message):
+  The path 'home/rmray/catkin_ws/devel' is in CATKIN_WORKSPACES but does not
+  have a .catkin file
+Call Stack (most recent call first):
+  /opt/ros/noetic/share/catkin/cmake/all.cmake:164 (include)
+  /opt/ros/noetic/share/catkin/cmake/catkinConfig.cmake:20 (include)
+  CMakeLists.txt:10 (find_package)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/rmray/catkin_ws/src/hero_chassis_controller/home/rmray/catkin_ws/build /CMakeFiles/CMakeOutput.log".

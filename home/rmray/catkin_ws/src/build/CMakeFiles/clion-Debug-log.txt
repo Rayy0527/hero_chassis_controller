@@ -1,0 +1,68 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCATKIN_DEVEL_PREFIX:PATH=../devel -G "CodeBlocks - Unix Makefiles" -S /home/rmray/catkin_ws/src/hero_chassis_controller -B "/home/rmray/catkin_ws/src/hero_chassis_controller/home/rmray/catkin_ws/src/build "
+-- The C compiler identification is GNU 9.4.0
+-- The CXX compiler identification is GNU 9.4.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Using CATKIN_DEVEL_PREFIX: ../devel
+-- Using CMAKE_PREFIX_PATH: /home/rmray/catkin_ws/devel;/opt/ros/noetic
+-- This workspace overlays: /home/rmray/catkin_ws/devel;/opt/ros/noetic
+-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+-- Using PYTHON_EXECUTABLE: /usr/bin/python3
+-- Using Debian Python package layout
+-- Found PY_em: /usr/lib/python3/dist-packages/em.py  
+-- Using empy: /usr/lib/python3/dist-packages/em.py
+-- Using CATKIN_ENABLE_TESTING: ON
+-- Call enable_testing()
+-- Using CATKIN_TEST_RESULTS_DIR: /home/rmray/catkin_ws/src/hero_chassis_controller/home/rmray/catkin_ws/src/build /test_results
+-- Forcing gtest/gmock from source, though one was otherwise available.
+-- Found gtest sources under '/usr/src/googletest': gtests will be built
+-- Found gmock sources under '/usr/src/googletest': gmock will be built
+-- Found PythonInterp: /usr/bin/python3 (found version "3.8.10") 
+-- Found Threads: TRUE  
+-- Using Python nosetests: /usr/bin/nosetests3
+-- catkin 0.8.10
+-- BUILD_SHARED_LIBS is on
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/em.py", line 3302, in <module>
+    if __name__ == '__main__': main()
+  File "/usr/lib/python3/dist-packages/em.py", line 3300, in main
+    invoke(sys.argv[1:])
+  File "/usr/lib/python3/dist-packages/em.py", line 3217, in invoke
+    _output = AbstractFile(*_output)
+  File "/usr/lib/python3/dist-packages/em.py", line 449, in __init__
+    self.bufferFile = theSubsystem.open(filename, mode)
+  File "/usr/lib/python3/dist-packages/em.py", line 360, in open
+    return self.defaultOpen(name, mode)
+  File "/usr/lib/python3/dist-packages/em.py", line 365, in defaultOpen
+    return open(name, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '../devel/lib/pkgconfig/hero_chassis_controller.pc'
+CMake Error at /opt/ros/noetic/share/catkin/cmake/safe_execute_process.cmake:11 (message):
+  
+  execute_process(/home/rmray/catkin_ws/src/hero_chassis_controller/home/rmray/catkin_ws/src/build
+  /catkin_generated/env_cached.sh "/usr/bin/python3"
+  "/usr/lib/python3/dist-packages/em.py" "--raw-errors" "-F"
+  "/home/rmray/catkin_ws/src/hero_chassis_controller/home/rmray/catkin_ws/src/build
+  /catkin_generated/pkg.develspace.context.pc.py" "-o"
+  "../devel/lib/pkgconfig/hero_chassis_controller.pc"
+  "/opt/ros/noetic/share/catkin/cmake/em/pkg.pc.em") returned error code 1
+Call Stack (most recent call first):
+  /opt/ros/noetic/share/catkin/cmake/em_expand.cmake:25 (safe_execute_process)
+  /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:327 (em_expand)
+  /opt/ros/noetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)
+  CMakeLists.txt:108 (catkin_package)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/rmray/catkin_ws/src/hero_chassis_controller/home/rmray/catkin_ws/src/build /CMakeFiles/CMakeOutput.log".
+See also "/home/rmray/catkin_ws/src/hero_chassis_controller/home/rmray/catkin_ws/src/build /CMakeFiles/CMakeError.log".
